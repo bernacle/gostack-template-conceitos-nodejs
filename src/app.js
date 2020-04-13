@@ -8,15 +8,6 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-function validateBody(req, res, next) {
-  const { id } = req.params
-
-  if (!isUuid(id)) {
-    return res.status(400).json({ error: "invalid repository id" });
-  }
-
-  return next();
-}
 
 
 const repositories = [];
@@ -33,7 +24,7 @@ app.post("/repositories", (request, response) => {
   return response.status(200).json(repository)
 });
 
-app.put("/repositories/:id", validateBody, (request, response) => {
+app.put("/repositories/:id", (request, response) => {
   const { id } = request.params
   const { title, url, techs } = request.body;
 
@@ -53,7 +44,7 @@ app.put("/repositories/:id", validateBody, (request, response) => {
 
 });
 
-app.delete("/repositories/:id", validateBody, (request, response) => {
+app.delete("/repositories/:id", (request, response) => {
   const { id } = request.params;
 
   const repositoryIndex = repositories.findIndex(respository => respository.id === id)
